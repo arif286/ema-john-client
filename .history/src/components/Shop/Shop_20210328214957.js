@@ -10,20 +10,24 @@ const Shop = () => {
     const [cart, setCart] = useState([]);
 
     useEffect(() => {
-        fetch("http://localhost:5000/products")
+        fetch("https://thawing-tundra-00223.herokuapp.com/products")
             .then(res => res.json())
         .then(data=> setProducts(data))
     }, []);
     useEffect(()=>{
         const savedCart = getDatabaseCart();
         const productKeys = Object.keys(savedCart);
-        const previousCart = productKeys.map( existingKey => {
-            const product = products.find( pd => pd.key === existingKey);
-            product.quantity = savedCart[existingKey];
-            return product;
-        } )
-        setCart(previousCart);
-    }, [products])
+        fetch("https://thawing-tundra-00223.herokuapp.com/getSomeProducts", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(productKeys),
+        })
+          .then((res) => res.json())
+          .then((data) => setCart(data));
+
+    },[])
 
     const handleAddProduct = (product) =>{
         const toBeAddedKey = product.key;

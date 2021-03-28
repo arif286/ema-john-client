@@ -1,6 +1,5 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import fakeData from '../../fakeData';
 import Product from '../Product/Product';
 
 const ProductDetail = () => {
@@ -8,12 +7,12 @@ const ProductDetail = () => {
     const [product, setProduct] = useState({});
 
     useEffect(() => {
-        fetch("http://localhost:5000/product" + productKey)
+        fetch("https://thawing-tundra-00223.herokuapp.com/product/" + productKey)
             .then(res => res.json())
         .then(data=> setProduct(data))
 
     }, [productKey]);
-    const product = fakeData.find(pd => pd.key === productKey);
+    // const product = fakeData.find(pd => pd.key === productKey);
     return (
         <div>
             <h1>Your Product Details.</h1>

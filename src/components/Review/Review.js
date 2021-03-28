@@ -25,7 +25,7 @@ const Review = () => {
         const savedCart = getDatabaseCart();
         const productKeys = Object.keys(savedCart);
 
-        fetch("http://localhost:5000/getSomeProducts", {
+        fetch("https://thawing-tundra-00223.herokuapp.com/getSomeProducts", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

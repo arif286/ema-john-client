@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { UserContext } from '../../App';
-import { getDatabaseCart } from '../../utilities/databaseManager';
+import { getDatabaseCart, processOrder } from '../../utilities/databaseManager';
 import './Shipment.css';
 
 const Shipment = () => {
@@ -10,15 +10,22 @@ const Shipment = () => {
   const onSubmit = data => {
     console.log('form submitted', data)
     const savedCart = getDatabaseCart();
-    const orderDetails = { ...loggedInUser, products: savedCart, Shipment: data };
+    const orderDetails = { ...loggedInUser, products: savedCart, Shipment: data, orderTime: new Date() };
 
-    fetch("http://localhost:5000/addOrder", {
-      method: 'POST',
+    fetch("https://thawing-tundra-00223.herokuapp.com/addOrder", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(orderDetails)
-    });
+      body: JSON.stringify(orderDetails),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data) {
+          processOrder();
+          alert("Your order placed successfully!");
+        }
+      });
     };
 
   console.log(watch("example")); // watch input value by passing the name of it
